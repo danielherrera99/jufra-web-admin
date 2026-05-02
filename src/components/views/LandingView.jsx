@@ -14,101 +14,172 @@ const LandingView = () => {
     emailContacto: '...',
     telefonoContacto: '...'
   });
+  const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    const fetchConfig = async () => {
+    const fetchData = async () => {
       try {
-        const res = await api.get('/web-config');
-        if (res.data.success) {
-          setConfig(res.data.data);
+        const [configRes, eventosRes] = await Promise.all([
+          api.get('/web-config'),
+          api.get('/eventos')
+        ]);
+        
+        if (configRes.data.success) setConfig(configRes.data.data);
+        if (eventosRes.data.success) {
+          const now = new Date();
+          const proximos = eventosRes.data.data
+            .filter(e => new Date(e.fecha) >= now)
+            .sort((a, b) => new Date(a.fecha) - new Date(b.fecha))
+            .slice(0, 3);
+          setEventos(proximos);
         }
       } catch (err) {
-        console.error('Error al cargar config web:', err);
+        console.error('Error al cargar datos:', err);
       }
     };
-    fetchConfig();
+    fetchData();
   }, []);
+
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    const day = d.getDate();
+    const month = d.toLocaleString('es', { month: 'short' });
+    return { day, month };
+  };
 
   return (
     <div className="landing-page animate-fade">
       {/* Navegación Pública */}
       <nav className="landing-nav">
         <Link to="/" className="logo">JUFRA POMALCA</Link>
-        <div style={{ display: 'flex', gap: '2rem' }}>
-          <a href="#inicio" style={{ textDecoration: 'none', color: 'var(--primary)', fontWeight: '600' }}>Inicio</a>
-          <a href="#mision" style={{ textDecoration: 'none', color: 'var(--primary)', fontWeight: '600' }}>Misión</a>
-          <a href="#contacto" style={{ textDecoration: 'none', color: 'var(--primary)', fontWeight: '600' }}>Contacto</a>
+        <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
+          <a href="#inicio">Inicio</a>
+          <a href="#mision">Misión</a>
+          <a href="#eventos">Eventos</a>
+          <a href="#contacto">Contacto</a>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header id="inicio" className="hero-section">
-        <div className="tau-watermark">TAU</div>
-        <h1 className="hero-title">{config.heroTitle}</h1>
-        <p className="hero-subtitle">
-          {config.heroSubtitle}
-        </p>
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-          <button className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
-            Únete a nuestra fraternidad
-          </button>
-          <button className="btn" style={{ background: 'white', border: '2px solid var(--primary)', color: 'var(--primary)', padding: '1rem 2.5rem' }}>
-            Ver actividades
-          </button>
+      {/* Hero Section con Imagen de Fondo Real (Generada) */}
+      <header id="inicio" className="hero-section" style={{ backgroundImage: `url('/hero_jufra_background.png')` }}>
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <h1 className="hero-title">{config.heroTitle}</h1>
+          <p className="hero-subtitle">
+            {config.heroSubtitle}
+          </p>
+          <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
+            <button className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
+              Únete a nuestra fraternidad
+            </button>
+            <button className="btn btn-ghost" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
+              Ver actividades
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Pilares Section */}
+      {/* Pilares Section con Iconos Unificados */}
       <section id="mision" className="features-grid">
-        <div className="feature-card zoom-hover">
-          <span className="feature-icon">🔥</span>
+        <div className="feature-card">
+          <div className="feature-icon-wrapper">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
           <h3>Espiritualidad</h3>
           <p>{config.mision}</p>
         </div>
-        <div className="feature-card zoom-hover">
-          <span className="feature-icon">📖</span>
+        <div className="feature-card">
+          <div className="feature-icon-wrapper">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          </div>
           <h3>Formación</h3>
           <p>{config.vision}</p>
         </div>
-        <div className="feature-card zoom-hover">
-          <span className="feature-icon">🙏</span>
+        <div className="feature-card">
+          <div className="feature-icon-wrapper">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
           <h3>Fraternidad</h3>
           <p>{config.valores}</p>
         </div>
       </section>
 
-      {/* Quote Section */}
-      <section style={{ padding: '6rem 5%', textAlign: 'center', background: 'rgba(139, 69, 19, 0.03)' }}>
-        <h2 style={{ fontStyle: 'italic', fontSize: '2.2rem', color: 'var(--primary)', maxWidth: '800px', margin: '0 auto' }}>
-          {config.fraseInspiradora}
-        </h2>
-        <p style={{ marginTop: '1.5rem', fontWeight: 'bold', color: 'var(--secondary)' }}>— {config.autorFrase}</p>
+      {/* Quote Section (Testimonio) */}
+      <section className="testimonial-section">
+        <div className="testimonial-card">
+          <p className="testimonial-text">
+            {config.fraseInspiradora}
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
+            <div style={{ width: '40px', height: '1px', background: var(--secondary) }}></div>
+            <p style={{ fontWeight: '800', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '2px' }}>
+              — {config.autorFrase}
+            </p>
+            <div style={{ width: '40px', height: '1px', background: var(--secondary) }}></div>
+          </div>
+        </div>
       </section>
 
-      {/* Footer */}
+      {/* Próximos Eventos Section */}
+      <section id="eventos" className="events-section">
+        <h2 className="section-title">Próximos Encuentros</h2>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          {eventos.length > 0 ? (
+            eventos.map(event => {
+              const { day, month } = formatDate(event.fecha);
+              return (
+                <div key={event._id} className="event-mini-card">
+                  <div className="event-date-box">
+                    <div className="event-date-day">{day}</div>
+                    <div className="event-date-month">{month}</div>
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: '1.2rem', color: 'var(--primary)', marginBottom: '0.2rem' }}>{event.titulo}</h4>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>📍 {event.lugar || 'Fraternidad'}</p>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No hay eventos programados próximamente.</p>
+          )}
+        </div>
+      </section>
+
+      {/* Footer mejorado */}
       <footer id="contacto" className="landing-footer">
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', textAlign: 'left' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '4rem', textAlign: 'left' }}>
           <div>
-            <h3 style={{ marginBottom: '1rem' }}>JUFRA POMALCA</h3>
-            <p style={{ opacity: 0.8, fontSize: '0.9rem' }}>Paz y Bien en nuestra fraternidad.</p>
+            <h3 style={{ marginBottom: '1.5rem', fontFamily: 'var(--font-serif)' }}>JUFRA POMALCA</h3>
+            <p style={{ opacity: 0.7, fontSize: '0.95rem', lineHeight: '1.6' }}>
+              Somos una comunidad de jóvenes que buscan vivir el carisma franciscano en la alegría y el servicio.
+            </p>
           </div>
           <div>
-            <h4 style={{ marginBottom: '1rem' }}>Contacto</h4>
-            <ul style={{ listStyle: 'none', opacity: 0.8, fontSize: '0.9rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <li>📧 {config.emailContacto}</li>
-              <li>📱 {config.telefonoContacto}</li>
+            <h4 style={{ marginBottom: '1.5rem', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem' }}>Contáctanos</h4>
+            <ul style={{ listStyle: 'none', opacity: 0.8, fontSize: '0.95rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <span style={{ fontSize: '1.2rem' }}>📧</span> {config.emailContacto}
+              </li>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <span style={{ fontSize: '1.2rem' }}>📱</span> {config.telefonoContacto}
+              </li>
+              <li style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+                <span style={{ fontSize: '1.2rem' }}>📍</span> Pomalca, Chiclayo, Perú
+              </li>
             </ul>
           </div>
           <div>
-            <h4 style={{ marginBottom: '1rem' }}>Redes Sociales</h4>
-            <div style={{ display: 'flex', gap: '1rem', fontSize: '1.5rem' }}>
-              <span>🔵</span> <span>📸</span> <span>🐦</span>
+            <h4 style={{ marginBottom: '1.5rem', textTransform: 'uppercase', letterSpacing: '1px', fontSize: '0.9rem' }}>Síguenos</h4>
+            <div style={{ display: 'flex', gap: '1.5rem' }}>
+              <a href="#" style={{ color: 'white', fontSize: '1.5rem' }}>🔵</a>
+              <a href="#" style={{ color: 'white', fontSize: '1.5rem' }}>📸</a>
             </div>
           </div>
         </div>
         
-        <div style={{ marginTop: '4rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', opacity: 0.6, fontSize: '0.8rem' }}>
-          &copy; {new Date().getFullYear()} Juventud Franciscana del Perú. Todos los derechos reservados.
+        <div style={{ marginTop: '5rem', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', opacity: 0.5, fontSize: '0.85rem' }}>
+          &copy; {new Date().getFullYear()} Juventud Franciscana - Pomalca. Todos los derechos reservados.
           <br />
           <Link to="/admin" className="admin-link">Acceso Interno (Consejo)</Link>
         </div>
