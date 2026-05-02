@@ -111,11 +111,11 @@ const LandingView = () => {
             {config.fraseInspiradora}
           </p>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-            <div style={{ width: '40px', height: '1px', background: var(--secondary) }}></div>
+            <div style={{ width: '40px', height: '1px', background: 'var(--secondary)' }}></div>
             <p style={{ fontWeight: '800', color: 'var(--secondary)', textTransform: 'uppercase', letterSpacing: '2px' }}>
               — {config.autorFrase}
             </p>
-            <div style={{ width: '40px', height: '1px', background: var(--secondary) }}></div>
+            <div style={{ width: '40px', height: '1px', background: 'var(--secondary)' }}></div>
           </div>
         </div>
       </section>
