@@ -146,6 +146,36 @@ const LandingView = () => {
         </div>
       </section>
 
+      {/* Sección Ubicación / Mapa */}
+      <section id="ubicacion" style={{ padding: '6rem 8%', textAlign: 'center', background: 'white' }}>
+        <h2 className="section-title">Encuéntranos</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
+          Te esperamos en nuestra fraternidad en Pomalca. ¡Ven a compartir con nosotros!
+        </p>
+        <div className="map-container zoom-hover">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15846.596669634027!2d-79.78280625!3d-6.7725916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x904bef0910074f1d%3A0x88981f148972e38c!2sPomalca%2C%20Chiclayo!5e0!3m2!1ses!2spe!4v1714690000000!5m2!1ses!2spe" 
+            width="100%" 
+            height="450" 
+            style={{ border: 0, borderRadius: '24px' }} 
+            allowFullScreen="" 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <a 
+            href="https://goo.gl/maps/Pomalca" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+          >
+            <span>📍</span> Abrir en Google Maps
+          </a>
+        </div>
+      </section>
+
       {/* Footer mejorado */}
       <footer id="contacto" className="landing-footer">
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '4rem', textAlign: 'left' }}>
