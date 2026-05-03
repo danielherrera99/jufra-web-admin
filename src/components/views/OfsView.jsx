@@ -10,7 +10,8 @@ const OfsView = () => {
     telefonoContacto: '+51 979 948 528',
     mapQuery: 'Pomalca',
     ofsHeroTitle: 'Fraternidad OFS Santa Isabel de Hungría',
-    ofsHeroSubtitle: 'Orden Franciscana Seglar: Viviendo el Evangelio en medio del mundo.'
+    ofsHeroSubtitle: 'Orden Franciscana Seglar: Viviendo el Evangelio en medio del mundo.',
+    ofsMapQuery: 'Convento San Antonio de Padua, Chiclayo, Perú'
   });
 
   useEffect(() => {
@@ -152,6 +153,35 @@ const OfsView = () => {
             </p>
             <div style={{ width: '40px', height: '1px', background: 'var(--secondary)' }}></div>
           </div>
+        </div>
+      </section>
+
+      {/* Sección Ubicación / Mapa OFS */}
+      <section id="ubicacion" style={{ padding: '6rem 8%', textAlign: 'center', background: 'white', borderTop: '1px solid var(--border)' }}>
+        <h2 className="section-title">Nuestra Sede</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '3rem', maxWidth: '600px', margin: '0 auto 3rem' }}>
+          La fraternidad se reúne en el Convento San Antonio de Padua. ¡Te invitamos a conocernos!
+        </p>
+        <div className="map-container zoom-hover" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <iframe 
+            src={`https://www.google.com/maps?q=${encodeURIComponent(config.ofsMapQuery || 'Convento San Antonio de Padua, Chiclayo')}&t=&z=16&ie=UTF8&iwloc=&output=embed`} 
+            width="100%" 
+            height="400" 
+            style={{ border: 0, borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }} 
+            allowFullScreen="" 
+            loading="lazy" 
+          ></iframe>
+        </div>
+        <div style={{ marginTop: '2rem' }}>
+          <a 
+            href={`https://www.google.com/maps/search/${encodeURIComponent(config.ofsMapQuery || 'Convento San Antonio de Padua, Chiclayo')}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}
+          >
+            <span>📍</span> Abrir en Google Maps
+          </a>
         </div>
       </section>
 

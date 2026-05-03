@@ -17,6 +17,7 @@ const WebConfigView = ({ loading, setLoading }) => {
     familiaDescripcion: '',
     ofsHeroTitle: '',
     ofsHeroSubtitle: '',
+    ofsMapQuery: '',
     facebookUrl: '',
     instagramUrl: ''
   });
@@ -150,6 +151,15 @@ const WebConfigView = ({ loading, setLoading }) => {
                 value={config.ofsHeroSubtitle} 
                 onChange={e => setConfig({...config, ofsHeroSubtitle: e.target.value})} 
                 style={{ minHeight: '80px' }}
+              />
+            </div>
+            <div className="input-group" style={{ marginTop: '1rem' }}>
+              <label>Ubicación en Mapa (OFS):</label>
+              <input 
+                type="text" 
+                value={config.ofsMapQuery} 
+                onChange={e => setConfig({...config, ofsMapQuery: e.target.value})} 
+                placeholder="Ej: Convento San Antonio de Padua, Chiclayo"
               />
             </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1rem' }}>
