@@ -15,15 +15,30 @@ const OfsView = () => {
   });
 
   useEffect(() => {
-    const fetchConfig = async () => {
+    const fetchData = async () => {
       try {
-        const res = await api.get('/web-config');
-        if (res.data.success) setConfig(res.data.data);
+        const [webRes, ofsRes] = await Promise.all([
+          api.get('/web-config'),
+          api.get('/ofs-config')
+        ]);
+        
+        let newConfig = { ...config };
+        if (webRes.data.success) {
+          newConfig = { ...newConfig, ...webRes.data.data };
+        }
+        if (ofsRes.data.success) {
+          // OfsConfig fields map to the local state
+          const ofsData = ofsRes.data.data;
+          newConfig.ofsHeroTitle = ofsData.heroTitle;
+          newConfig.ofsHeroSubtitle = ofsData.heroSubtitle;
+          newConfig.ofsMapQuery = ofsData.mapQuery;
+        }
+        setConfig(newConfig);
       } catch (err) {
         console.error('Error al cargar config:', err);
       }
     };
-    fetchConfig();
+    fetchData();
     window.scrollTo(0, 0);
   }, []);
 

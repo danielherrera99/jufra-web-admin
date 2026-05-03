@@ -39,6 +39,7 @@ import ComunicacionView from './components/views/ComunicacionView';
 import LandingView from './components/views/LandingView';
 import OfsView from './components/views/OfsView';
 import WebConfigView from './components/views/WebConfigView';
+import OfsConfigView from './components/views/OfsConfigView';
 import MisMensajesView from './components/views/MisMensajesView';
 import MensajesAdminView from './components/views/MensajesAdminView';
 import ItemReadModal from './components/ItemReadModal';
@@ -203,6 +204,7 @@ const modules = [
   { id: 'Cantos', label: 'Cancionero', icon: '🎵' },
   { id: 'Comunicacion', label: 'Comunicación', icon: '📢' },
   { id: 'WebConfig', label: 'Web Institucional', icon: '🌐' },
+  {id: 'OfsConfig', label: 'Configuración OFS', icon: '☦️'},
   { id: 'Perfil', label: 'Mi Perfil', icon: '👤' },
 ];
 
@@ -1026,6 +1028,7 @@ const Dashboard = ({ user, onLogout }) => {
         return renderMisMensajes();
       case 'Perfil': return <PerfilView data={data} loading={loading} ActivityIndicator={ActivityIndicator} SafeImage={SafeImage} isProfileEditing={isProfileEditing} setIsProfileEditing={setIsProfileEditing} profileData={profileData} setProfileData={setProfileData} handleUpdatePerfil={handleUpdatePerfil} getSafeDateForInput={getSafeDateForInput} formatSafeDate={formatSafeDate} />;
       case 'WebConfig': return <WebConfigView loading={loading} setLoading={setLoading} />;
+      case 'OfsConfig': return <OfsConfigView loading={loading} setLoading={setLoading} />;
       case 'Comunicacion': return <ComunicacionView loading={loading} setLoading={setLoading} hermanos={data.hermanos || []} />;
       case 'Mensajes': return <MensajesAdminView loading={loading} ActivityIndicator={ActivityIndicator} data={data} openChatAdmin={openChatAdmin} formatSafeDate={formatSafeDate} />;
       case 'Espiritu': return <EspirituList filteredData={filteredData} espirituTab={espirituTab} setEspirituTab={setEspirituTab} openEditModal={openEditModal} handleDelete={handleDelete} />;

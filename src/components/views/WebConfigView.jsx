@@ -135,38 +135,6 @@ const WebConfigView = ({ loading, setLoading }) => {
             </div>
           </section>
 
-          <section style={{ marginBottom: '3rem', padding: '2rem', background: 'rgba(139, 69, 19, 0.03)', borderRadius: '15px', border: '1px dashed var(--secondary)' }}>
-            <h3 style={{ color: 'var(--primary)', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Página Propia de la OFS (Landing)</h3>
-            <div className="input-group">
-              <label>Título de Bienvenida (OFS):</label>
-              <input 
-                type="text" 
-                value={config.ofsHeroTitle} 
-                onChange={e => setConfig({...config, ofsHeroTitle: e.target.value})} 
-              />
-            </div>
-            <div className="input-group">
-              <label>Subtítulo / Lema (OFS):</label>
-              <textarea 
-                value={config.ofsHeroSubtitle} 
-                onChange={e => setConfig({...config, ofsHeroSubtitle: e.target.value})} 
-                style={{ minHeight: '80px' }}
-              />
-            </div>
-            <div className="input-group" style={{ marginTop: '1rem' }}>
-              <label>Ubicación en Mapa (OFS):</label>
-              <input 
-                type="text" 
-                value={config.ofsMapQuery} 
-                onChange={e => setConfig({...config, ofsMapQuery: e.target.value})} 
-                placeholder="Ej: Convento San Antonio de Padua, Chiclayo"
-              />
-            </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1rem' }}>
-              ℹ️ Estos textos solo se ven cuando alguien entra directamente a la página de la OFS.
-            </p>
-          </section>
-
           <section style={{ marginBottom: '3rem' }}>
             <h3 style={{ color: 'var(--secondary)', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Cita Inspiradora</h3>
             <div className="input-group">
