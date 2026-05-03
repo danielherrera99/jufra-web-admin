@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api-jufra.onrender.com/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://api-jufra.onrender.com/api',
   timeout: 10000,
 });
 

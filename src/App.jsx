@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import api from './config/api';
 import Consejo from './components/Consejo';
 import HermanosEditModal from './components/HermanosEditModal';
@@ -183,8 +183,51 @@ const Login = ({ onLogin }) => {
 };
 
 // Dashboard Component Shell
+const modules = [
+  { id: 'Dashboard', label: 'Inicio (Panel)', icon: '🏠' },
+  { id: 'Hermanos', label: 'Hermanos', icon: '👤' },
+  { id: 'Consejo', label: 'El Consejo', icon: '🛡️' },
+  { id: 'Espiritu', label: 'Espíritu', icon: '🔥' },
+  { id: 'Asistencia', label: 'Asistencia (QR)', icon: '✅' },
+  { id: 'Anuncios', label: 'Anuncios', icon: '📢' },
+  { id: 'Eventos', label: 'Calendario (Eventos)', icon: '📅' },
+  { id: 'Servicios', label: 'Servicios', icon: '💼' },
+  { id: 'Peticiones', label: 'Peticiones', icon: '🙏' },
+  { id: 'Formacion', label: 'Formación', icon: '📖' },
+  { id: 'Actas', label: 'Actas', icon: '📝' },
+  { id: 'Documentos', label: 'Documentos', icon: '📄' },
+  { id: 'Galeria', label: 'Galería', icon: '🖼️' },
+  { id: 'Mapa', label: 'Mapa', icon: '🗺️' },
+  { id: 'Mensajes', label: 'Mensajes (Control)', icon: '🕵️' },
+  { id: 'Chat', label: 'Mis Mensajes', icon: '💬' },
+  { id: 'Cantos', label: 'Cancionero', icon: '🎵' },
+  { id: 'Comunicacion', label: 'Comunicación', icon: '📢' },
+  { id: 'WebConfig', label: 'Web Institucional', icon: '🌐' },
+  { id: 'Perfil', label: 'Mi Perfil', icon: '👤' },
+];
+
 const Dashboard = ({ user, onLogout }) => {
-  const [activeTab, setActiveTab] = useState('Dashboard');
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Obtener el tab activo de la URL
+  const activeTab = useMemo(() => {
+    const segments = location.pathname.split('/');
+    const lastSegment = segments[segments.length - 1];
+    
+    if (lastSegment === 'dashboard' || !lastSegment) return 'Dashboard';
+    
+    const foundModule = modules.find(m => m.id.toLowerCase() === lastSegment.toLowerCase());
+    return foundModule ? foundModule.id : 'Dashboard';
+  }, [location.pathname]);
+
+  const setActiveTab = (tabId) => {
+    setData([]);
+    setSelectedAsistenciaDate(null);
+    setSearchTerm('');
+    if (tabId === 'Dashboard') navigate('/dashboard');
+    else navigate(`/dashboard/${tabId.toLowerCase()}`);
+  };
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -922,28 +965,7 @@ const Dashboard = ({ user, onLogout }) => {
     }
   };
 
-  const modules = [
-    { id: 'Dashboard', label: 'Inicio (Panel)', icon: '🏠' },
-    { id: 'Hermanos', label: 'Hermanos', icon: '👤' },
-    { id: 'Consejo', label: 'El Consejo', icon: '🛡️' },
-    { id: 'Espiritu', label: 'Espíritu', icon: '🔥' },
-    { id: 'Asistencia', label: 'Asistencia (QR)', icon: '✅' },
-    { id: 'Anuncios', label: 'Anuncios', icon: '📢' },
-    { id: 'Eventos', label: 'Calendario (Eventos)', icon: '📅' },
-    { id: 'Servicios', label: 'Servicios', icon: '💼' },
-    { id: 'Peticiones', label: 'Peticiones', icon: '🙏' },
-    { id: 'Formacion', label: 'Formación', icon: '📖' },
-    { id: 'Actas', label: 'Actas', icon: '📝' },
-    { id: 'Documentos', label: 'Documentos', icon: '📄' },
-    { id: 'Galeria', label: 'Galería', icon: '🖼️' },
-    { id: 'Mapa', label: 'Mapa', icon: '🗺️' },
-    { id: 'Mensajes', label: 'Mensajes (Control)', icon: '🕵️' },
-    { id: 'Chat', label: 'Mis Mensajes', icon: '💬' },
-    { id: 'Cantos', label: 'Cancionero', icon: '🎵' },
-    { id: 'Comunicacion', label: 'Comunicación', icon: '📢' },
-    { id: 'WebConfig', label: 'Web Institucional', icon: '🌐' },
-    { id: 'Perfil', label: 'Mi Perfil', icon: '👤' },
-  ];
+
 
   const groupedAsistencias = activeTab === 'Asistencia' ? filteredData.reduce((acc, item) => {
     if (!item || !item.fecha) return acc;
@@ -1074,10 +1096,7 @@ const Dashboard = ({ user, onLogout }) => {
               href="#"
               onClick={(e) => { 
                 e.preventDefault(); 
-                setData([]); 
                 setActiveTab(mod.id); 
-                setSelectedAsistenciaDate(null); 
-                setSearchTerm(''); 
                 setIsSidebarOpen(false); 
               }}
               className={`nav-link ${activeTab === mod.id ? 'active' : ''}`}
@@ -1538,7 +1557,7 @@ function App() {
           
           {/* Panel de Administración (Privado) */}
           <Route path="/admin" element={!user ? <Login onLogin={setUser} /> : <Navigate to="/dashboard" />} />
-          <Route path="/dashboard" element={user ? <Dashboard user={user} onLogout={handleLogout} /> : <Navigate to="/admin" />} />
+          <Route path="/dashboard/*" element={user ? <Dashboard user={user} onLogout={handleLogout} /> : <Navigate to="/admin" />} />
           
           {/* Redirección por defecto */}
           <Route path="*" element={<Navigate to="/" />} />
