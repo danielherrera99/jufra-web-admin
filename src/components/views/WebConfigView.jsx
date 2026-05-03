@@ -13,6 +13,8 @@ const WebConfigView = ({ loading, setLoading }) => {
     emailContacto: '',
     telefonoContacto: '',
     mapQuery: '',
+    familiaTitulo: '',
+    familiaDescripcion: '',
     facebookUrl: '',
     instagramUrl: ''
   });
@@ -104,6 +106,28 @@ const WebConfigView = ({ loading, setLoading }) => {
                 value={config.valores} 
                 onChange={e => setConfig({...config, valores: e.target.value})} 
                 style={{ minHeight: '100px' }}
+              />
+            </div>
+          </section>
+
+          <section style={{ marginBottom: '3rem' }}>
+            <h3 style={{ color: 'var(--secondary)', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Familia Franciscana (OFS)</h3>
+            <div className="input-group">
+              <label>Título de la Fraternidad OFS:</label>
+              <input 
+                type="text" 
+                value={config.familiaTitulo} 
+                onChange={e => setConfig({...config, familiaTitulo: e.target.value})} 
+                placeholder="Ej: Fraternidad OFS Santa Isabel de Hungría"
+              />
+            </div>
+            <div className="input-group">
+              <label>Descripción / Vínculo:</label>
+              <textarea 
+                value={config.familiaDescripcion} 
+                onChange={e => setConfig({...config, familiaDescripcion: e.target.value})} 
+                style={{ minHeight: '100px' }}
+                placeholder="Describe la relación con la OFS..."
               />
             </div>
           </section>

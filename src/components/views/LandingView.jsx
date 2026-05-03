@@ -13,7 +13,9 @@ const LandingView = () => {
     autorFrase: '...',
     emailContacto: '...',
     telefonoContacto: '...',
-    mapQuery: 'Pomalca'
+    mapQuery: 'Pomalca',
+    familiaTitulo: 'Cargando...',
+    familiaDescripcion: '...'
   });
   const [eventos, setEventos] = useState([]);
 
@@ -102,6 +104,37 @@ const LandingView = () => {
           </div>
           <h3>Fraternidad</h3>
           <p>{config.valores}</p>
+        </div>
+      </section>
+
+      {/* Nueva Sección: Familia Franciscana (OFS) */}
+      <section id="familia" style={{ padding: '8rem 10%', background: 'linear-gradient(to right, rgba(139, 69, 19, 0.05), rgba(139, 69, 19, 0.02))', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '4rem', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1', minWidth: '300px' }}>
+            <h2 className="section-title" style={{ textAlign: 'left', marginBottom: '1.5rem' }}>Nuestra Familia Franciscana</h2>
+            <h4 style={{ color: 'var(--secondary)', fontSize: '1.4rem', marginBottom: '1rem', fontFamily: 'var(--font-serif)' }}>{config.familiaTitulo}</h4>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', lineHeight: '1.8' }}>
+              {config.familiaDescripcion}
+            </p>
+            <div style={{ marginTop: '2rem' }}>
+              <button className="btn btn-ghost" style={{ padding: '0.8rem 2rem' }}>Conocer más de la OFS</button>
+            </div>
+          </div>
+          <div style={{ flex: '0.8', minWidth: '300px', textAlign: 'center', position: 'relative' }}>
+             {/* Un elemento decorativo que simula una foto o sello */}
+             <div style={{ 
+               width: '100%', 
+               aspectRatio: '1/1', 
+               background: 'var(--primary)', 
+               borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%', 
+               opacity: 0.1, 
+               position: 'absolute', 
+               top: '0', 
+               left: '0', 
+               zIndex: 1 
+             }}></div>
+             <div style={{ position: 'relative', zIndex: 2, fontSize: '8rem' }}>🕊️</div>
+          </div>
         </div>
       </section>
 
