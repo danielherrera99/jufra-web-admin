@@ -8,7 +8,9 @@ const OfsView = () => {
     familiaDescripcion: 'Caminamos junto a nuestros hermanos mayores...',
     emailContacto: 'jufrapomalca@gmail.com',
     telefonoContacto: '+51 979 948 528',
-    mapQuery: 'Pomalca'
+    mapQuery: 'Pomalca',
+    ofsHeroTitle: 'Fraternidad OFS Santa Isabel de Hungría',
+    ofsHeroSubtitle: 'Orden Franciscana Seglar: Viviendo el Evangelio en medio del mundo.'
   });
 
   useEffect(() => {
@@ -42,9 +44,9 @@ const OfsView = () => {
       <header className="hero-section" style={{ backgroundImage: `url('/hero_ofs_san_damian.png')` }}>
         <div className="hero-overlay"></div>
         <div className="hero-content">
-          <h1 className="hero-title">{config.familiaTitulo}</h1>
+          <h1 className="hero-title">{config.ofsHeroTitle || config.familiaTitulo}</h1>
           <p className="hero-subtitle">
-            Orden Franciscana Seglar: Viviendo el Evangelio en medio del mundo.
+            {config.ofsHeroSubtitle || 'Orden Franciscana Seglar: Viviendo el Evangelio en medio del mundo.'}
           </p>
           <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
             <button className="btn btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.1rem' }}>
