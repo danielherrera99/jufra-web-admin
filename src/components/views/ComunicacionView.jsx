@@ -38,7 +38,8 @@ const ComunicacionView = ({ loading, setLoading, hermanos = [] }) => {
         setFormData({ filtro: 'todos', asunto: '', mensaje: '', correoManual: '', usuarioId: '' });
       }
     } catch (err) {
-      alert('Error al enviar comunicado: ' + (err.response?.data?.message || err.message));
+      const errorMsg = err.response?.data?.error || err.response?.data?.message || err.message;
+      alert('Error al enviar comunicado: ' + errorMsg);
     } finally {
       setLoading(false);
     }
