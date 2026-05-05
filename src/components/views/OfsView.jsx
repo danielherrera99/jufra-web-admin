@@ -19,6 +19,7 @@ const OfsView = () => {
     bannerTitle: '',
     bannerDescription: '',
     bannerImage: '',
+    bannerLink: '',
     bannerActive: false
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -114,12 +115,10 @@ const OfsView = () => {
         </div>
       </section>
 
-      {/* NUEVO BANNER ESPECIAL (DINÁMICO) */}
+      {/* NUEVO BANNER ESPECIAL (DINÁMICO CON BOTÓN) */}
       {config.bannerActive && (
         <section style={{ padding: '3rem 1rem', background: '#FFF9F2' }}>
-            <div 
-              className="glass-card zoom-hover" 
-              style={{ 
+            <div className="glass-card" style={{ 
                 maxWidth: '1100px', 
                 margin: '0 auto', 
                 padding: 0, 
@@ -127,11 +126,8 @@ const OfsView = () => {
                 display: 'flex',
                 flexDirection: window.innerWidth < 768 ? 'column' : 'row',
                 boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                border: '1px solid #FFE0B2',
-                cursor: config.bannerLink ? 'pointer' : 'default'
-              }}
-              onClick={() => config.bannerLink && window.open(config.bannerLink, '_blank')}
-            >
+                border: '1px solid #FFE0B2'
+            }}>
                 {config.bannerImage && (
                     <div style={{ flex: 1, minHeight: '300px' }}>
                         <img 
@@ -141,17 +137,36 @@ const OfsView = () => {
                         />
                     </div>
                 )}
-                <div style={{ flex: 1, padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                    <span style={{ color: 'var(--secondary)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                <div style={{ flex: 1, padding: 'clamp(1.5rem, 5vw, 3rem)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <span style={{ color: 'var(--secondary)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.8rem', marginBottom: '1rem' }}>
                         📢 Anuncio Especial
                     </span>
-                    <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', marginBottom: '1.5rem', fontFamily: 'var(--font-serif)' }}>
+                    <h2 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.2rem)', color: 'var(--primary)', marginBottom: '1rem', fontFamily: 'var(--font-serif)', lineHeight: '1.2' }}>
                         {config.bannerTitle}
                     </h2>
-                    <p style={{ fontSize: '1.1rem', color: 'var(--text-main)', lineHeight: '1.8', marginBottom: '2rem' }}>
+                    <p style={{ fontSize: '1.05rem', color: 'var(--text-main)', lineHeight: '1.6', marginBottom: '2rem' }}>
                         {config.bannerDescription}
                     </p>
-                    <div style={{ width: '60px', height: '4px', background: 'var(--secondary)', borderRadius: '2px' }}></div>
+                    
+                    {config.bannerLink && (
+                        <a 
+                            href={config.bannerLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-primary zoom-hover"
+                            style={{ 
+                                alignSelf: 'flex-start',
+                                padding: '1rem 2rem',
+                                textDecoration: 'none',
+                                borderRadius: '8px',
+                                background: 'var(--primary)',
+                                fontWeight: 'bold',
+                                fontSize: '0.9rem'
+                            }}
+                        >
+                            Ver más información ➔
+                        </a>
+                    )}
                 </div>
             </div>
         </section>
