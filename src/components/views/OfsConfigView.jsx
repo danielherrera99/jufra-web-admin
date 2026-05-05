@@ -15,6 +15,8 @@ const OfsConfigView = ({ loading, setLoading }) => {
     bannerImage: '',
     bannerActive: false
   });
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   useEffect(() => {
     fetchConfig();
@@ -25,13 +27,13 @@ const OfsConfigView = ({ loading, setLoading }) => {
     try {
       const res = await api.get('/ofs-config');
       if (res.data.success) {
-        // Asegurar que los campos del banner existan en el estado si vienen nulos
         const data = res.data.data;
         setConfig({
             ...config,
             ...data,
             bannerActive: data.bannerActive || false
         });
+        if (data.bannerImage) setPreviewUrl(data.bannerImage);
       }
     } catch (err) {
       console.error('Error al cargar config OFS:', err);
@@ -40,13 +42,39 @@ const OfsConfigView = ({ loading, setLoading }) => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     try {
-      const res = await api.put('/ofs-config', config);
+      const formData = new FormData();
+      
+      // Agregar todos los campos de texto al FormData
+      Object.keys(config).forEach(key => {
+        formData.append(key, config[key]);
+      });
+
+      // Si hay un archivo seleccionado, agregarlo
+      if (selectedFile) {
+        formData.append('bannerFile', selectedFile);
+      }
+
+      const res = await api.put('/ofs-config', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+
       if (res.data.success) {
-        alert('¡Configuración OFS guardada! Los cambios ya son visibles en la página de la OFS.');
+        alert('¡Configuración OFS guardada con éxito!');
+        setSelectedFile(null);
+        fetchConfig(); // Recargar para obtener la URL final del servidor
       }
     } catch (err) {
       alert('Error al guardar: ' + err.message);
@@ -67,165 +95,100 @@ const OfsConfigView = ({ loading, setLoading }) => {
         </div>
 
         <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
+          {/* SECCIÓN HERO */}
           <section style={{ marginBottom: '2rem', padding: '1.5rem', background: '#FFF9F2', borderRadius: '12px' }}>
             <h3 style={{ color: 'var(--secondary)', marginBottom: '1.5rem', borderBottom: '1px solid #FFE0B2', paddingBottom: '0.5rem' }}>Cabecera (Hero)</h3>
-            
             <div className="input-group">
               <label>Título de Bienvenida:</label>
-              <input 
-                type="text" 
-                value={config.heroTitle} 
-                onChange={e => setConfig({...config, heroTitle: e.target.value})} 
-                placeholder="Ej: Fraternidad OFS Santa Isabel de Hungría"
-                required
-              />
+              <input type="text" value={config.heroTitle} onChange={e => setConfig({...config, heroTitle: e.target.value})} required />
             </div>
-
             <div className="input-group" style={{ marginTop: '1.5rem' }}>
               <label>Subtítulo / Lema Espiritual:</label>
-              <textarea 
-                value={config.heroSubtitle} 
-                onChange={e => setConfig({...config, heroSubtitle: e.target.value})} 
-                style={{ minHeight: '100px' }}
-                placeholder="Escribe el lema que aparecerá bajo el título..."
-                required
-              />
+              <textarea value={config.heroSubtitle} onChange={e => setConfig({...config, heroSubtitle: e.target.value})} style={{ minHeight: '80px' }} required />
             </div>
           </section>
 
+          {/* SECCIÓN BANNER ESPECIAL */}
           <section style={{ marginBottom: '2rem', padding: '1.5rem', background: '#FFF0F0', borderRadius: '12px', border: '1px solid #FFCDD2' }}>
             <h3 style={{ color: '#C62828', marginBottom: '1.5rem', borderBottom: '1px solid #FFCDD2', paddingBottom: '0.5rem' }}>📢 Banner de Anuncio Especial</h3>
             
             <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '12px', background: 'white', padding: '10px', borderRadius: '8px' }}>
-                <input 
-                    type="checkbox" 
-                    id="bannerActive"
-                    checked={config.bannerActive} 
-                    onChange={e => setConfig({...config, bannerActive: e.target.checked})}
-                    style={{ width: '22px', height: '22px', cursor: 'pointer' }}
-                />
-                <label htmlFor="bannerActive" style={{ fontWeight: 'bold', color: '#C62828', cursor: 'pointer' }}>Activar este banner en la web</label>
+                <input type="checkbox" id="bannerActive" checked={config.bannerActive} onChange={e => setConfig({...config, bannerActive: e.target.checked})} style={{ width: '22px', height: '22px' }} />
+                <label htmlFor="bannerActive" style={{ fontWeight: 'bold', color: '#C62828' }}>Activar este banner en la web</label>
             </div>
 
             <div className="input-group">
               <label>Título del Banner:</label>
-              <input 
-                type="text" 
-                value={config.bannerTitle || ''} 
-                onChange={e => setConfig({...config, bannerTitle: e.target.value})} 
-                placeholder="Ej: ¡Gran Rifa Pro-Fondos!"
-              />
+              <input type="text" value={config.bannerTitle || ''} onChange={e => setConfig({...config, bannerTitle: e.target.value})} />
             </div>
 
             <div className="input-group" style={{ marginTop: '1.5rem' }}>
               <label>Descripción del Banner:</label>
-              <textarea 
-                value={config.bannerDescription || ''} 
-                onChange={e => setConfig({...config, bannerDescription: e.target.value})} 
-                style={{ minHeight: '80px' }}
-                placeholder="Describe el evento o anuncio..."
-              />
+              <textarea value={config.bannerDescription || ''} onChange={e => setConfig({...config, bannerDescription: e.target.value})} style={{ minHeight: '60px' }} />
             </div>
 
             <div className="input-group" style={{ marginTop: '1.5rem' }}>
-              <label>URL de la Imagen del Banner:</label>
-              <input 
-                type="text" 
-                value={config.bannerImage || ''} 
-                onChange={e => setConfig({...config, bannerImage: e.target.value})} 
-                placeholder="https://ejemplo.com/mi-imagen.jpg"
-              />
-              <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '5px' }}>
-                💡 Tip: Puedes subir tu imagen a un sitio como imgur.com o postimages.org y pegar el link directo aquí.
-              </p>
+              <label>Imagen del Banner:</label>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {previewUrl && (
+                  <div style={{ width: '100%', height: '150px', borderRadius: '8px', overflow: 'hidden', border: '1px solid #ddd' }}>
+                    <img src={previewUrl} alt="Vista previa" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={handleFileChange}
+                  style={{ padding: '10px', background: 'white', borderRadius: '8px', border: '1px dashed #C62828' }}
+                />
+                <p style={{ fontSize: '0.8rem', color: '#666' }}>💡 Puedes subir una foto desde tu PC o pegar una URL abajo.</p>
+                <input 
+                  type="text" 
+                  value={config.bannerImage || ''} 
+                  onChange={e => setConfig({...config, bannerImage: e.target.value})} 
+                  placeholder="O pega una URL de imagen aquí..."
+                />
+              </div>
             </div>
           </section>
 
+          {/* SECCIÓN IDENTIDAD */}
           <section style={{ marginBottom: '2rem', padding: '1.5rem', background: '#FFF9F2', borderRadius: '12px' }}>
             <h3 style={{ color: 'var(--secondary)', marginBottom: '1.5rem', borderBottom: '1px solid #FFE0B2', paddingBottom: '0.5rem' }}>Identidad (¿Quiénes somos?)</h3>
             <div className="input-group">
               <label>Descripción de Identidad:</label>
-              <textarea 
-                value={config.quienesSomos} 
-                onChange={e => setConfig({...config, quienesSomos: e.target.value})} 
-                style={{ minHeight: '120px' }}
-                placeholder="Describe la identidad de la fraternidad..."
-                required
-              />
+              <textarea value={config.quienesSomos} onChange={e => setConfig({...config, quienesSomos: e.target.value})} style={{ minHeight: '100px' }} required />
             </div>
           </section>
 
+          {/* SECCIÓN FOOTER */}
           <section style={{ marginBottom: '2.5rem', padding: '1.5rem', background: '#F5F5F5', borderRadius: '12px' }}>
-            <h3 style={{ color: 'var(--text-main)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>Información de Pie de Página (Footer)</h3>
-            
+            <h3 style={{ color: 'var(--text-main)', marginBottom: '1.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>Información de Contacto</h3>
             <div className="input-group">
               <label>Dirección física:</label>
-              <input 
-                type="text" 
-                value={config.footerDireccion} 
-                onChange={e => setConfig({...config, footerDireccion: e.target.value})} 
-                placeholder="Ej: Convento San Antonio de Padua, Chiclayo"
-              />
+              <input type="text" value={config.footerDireccion} onChange={e => setConfig({...config, footerDireccion: e.target.value})} />
             </div>
-
             <div className="row" style={{ gap: '1rem', marginTop: '1.5rem' }}>
                <div className="col">
                   <div className="input-group">
-                    <label>Email de contacto:</label>
-                    <input 
-                      type="email" 
-                      value={config.footerEmail} 
-                      onChange={e => setConfig({...config, footerEmail: e.target.value})} 
-                    />
+                    <label>Email:</label>
+                    <input type="email" value={config.footerEmail} onChange={e => setConfig({...config, footerEmail: e.target.value})} />
                   </div>
                </div>
                <div className="col">
                   <div className="input-group">
-                    <label>Teléfono / WhatsApp:</label>
-                    <input 
-                      type="text" 
-                      value={config.footerTelefono} 
-                      onChange={e => setConfig({...config, footerTelefono: e.target.value})} 
-                    />
+                    <label>WhatsApp:</label>
+                    <input type="text" value={config.footerTelefono} onChange={e => setConfig({...config, footerTelefono: e.target.value})} />
                   </div>
                </div>
-            </div>
-
-            <div className="input-group" style={{ marginTop: '1.5rem' }}>
-              <label>Ubicación en Mapa (Query):</label>
-              <input 
-                type="text" 
-                value={config.mapQuery} 
-                onChange={e => setConfig({...config, mapQuery: e.target.value})} 
-                placeholder="Ej: Convento San Antonio de Padua, Chiclayo"
-              />
             </div>
           </section>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem' }}>
-             <button 
-              type="button" 
-              className="btn btn-ghost" 
-              onClick={() => window.open('/familia-ofs', '_blank')}
-            >
-              👁️ Ver Página
-            </button>
-            <button 
-              type="submit" 
-              className="btn btn-primary" 
-              style={{ padding: '1rem 3rem' }}
-              disabled={loading}
-            >
-              {loading ? 'Guardando...' : '💾 Guardar Configuración OFS'}
-            </button>
+            <button type="button" className="btn btn-ghost" onClick={() => window.open('/familia-ofs', '_blank')}>👁️ Ver Página</button>
+            <button type="submit" className="btn btn-primary" style={{ padding: '1rem 3rem' }} disabled={loading}>{loading ? 'Guardando...' : '💾 Guardar Cambios'}</button>
           </div>
         </form>
-      </div>
-
-      <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(0,0,0,0.02)', borderRadius: '12px', border: '1px dashed var(--border)' }}>
-        <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-          <b>Nota de Seguridad:</b> Este módulo es independiente. Los cambios realizados aquí no afectan a la página principal de la JUFRA, permitiendo que la fraternidad OFS mantenga su propia identidad digital.
-        </p>
       </div>
     </div>
   );
