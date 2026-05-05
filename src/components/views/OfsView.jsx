@@ -15,7 +15,11 @@ const OfsView = () => {
     quienesSomos: 'Caminamos junto a nuestros hermanos mayores de la Orden Franciscana Seglar...',
     footerDireccion: 'Convento San Antonio de Padua, Chiclayo, Perú',
     footerEmail: 'jufrapomalca@gmail.com',
-    footerTelefono: '+51 979 948 528'
+    footerTelefono: '+51 979 948 528',
+    bannerTitle: '',
+    bannerDescription: '',
+    bannerImage: '',
+    bannerActive: false
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -33,13 +37,17 @@ const OfsView = () => {
         }
         if (ofsRes.data.success) {
           const ofsData = ofsRes.data.data;
-          newConfig.ofsHeroTitle = ofsData.heroTitle;
-          newConfig.ofsHeroSubtitle = ofsData.heroSubtitle;
-          newConfig.ofsMapQuery = ofsData.mapQuery;
-          newConfig.quienesSomos = ofsData.quienesSomos;
-          newConfig.footerDireccion = ofsData.footerDireccion;
-          newConfig.footerEmail = ofsData.footerEmail;
-          newConfig.footerTelefono = ofsData.footerTelefono;
+          newConfig = {
+              ...newConfig,
+              ...ofsData,
+              ofsHeroTitle: ofsData.heroTitle,
+              ofsHeroSubtitle: ofsData.heroSubtitle,
+              ofsMapQuery: ofsData.mapQuery,
+              quienesSomos: ofsData.quienesSomos,
+              footerDireccion: ofsData.footerDireccion,
+              footerEmail: ofsData.footerEmail,
+              footerTelefono: ofsData.footerTelefono
+          };
         }
         setConfig(newConfig);
       } catch (err) {
@@ -69,7 +77,7 @@ const OfsView = () => {
         </div>
       </nav>
 
-      {/* SECCIÓN IMPACTO INICIAL: ORAMOS POR TI (MÁS ELEGANTE Y ARRIBA) */}
+      {/* SECCIÓN IMPACTO INICIAL: ORAMOS POR TI */}
       <section id="oracion" style={{ 
         background: 'linear-gradient(to right, #8B4513, #A0522D)', 
         padding: '2rem 1rem',
@@ -106,10 +114,48 @@ const OfsView = () => {
         </div>
       </section>
 
+      {/* NUEVO BANNER ESPECIAL (DINÁMICO) */}
+      {config.bannerActive && (
+        <section style={{ padding: '3rem 1rem', background: '#FFF9F2' }}>
+            <div className="glass-card zoom-hover" style={{ 
+                maxWidth: '1100px', 
+                margin: '0 auto', 
+                padding: 0, 
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+                boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                border: '1px solid #FFE0B2'
+            }}>
+                {config.bannerImage && (
+                    <div style={{ flex: 1, minHeight: '300px' }}>
+                        <img 
+                            src={config.bannerImage} 
+                            alt={config.bannerTitle} 
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                    </div>
+                )}
+                <div style={{ flex: 1, padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <span style={{ color: 'var(--secondary)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                        📢 Anuncio Especial
+                    </span>
+                    <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', marginBottom: '1.5rem', fontFamily: 'var(--font-serif)' }}>
+                        {config.bannerTitle}
+                    </h2>
+                    <p style={{ fontSize: '1.1rem', color: 'var(--text-main)', lineHeight: '1.8', marginBottom: '2rem' }}>
+                        {config.bannerDescription}
+                    </p>
+                    <div style={{ width: '60px', height: '4px', background: 'var(--secondary)', borderRadius: '2px' }}></div>
+                </div>
+            </div>
+        </section>
+      )}
+
       {/* Hero Section OFS */}
       <header className="hero-section" style={{ 
         backgroundImage: `url('/hero_ofs_san_damian.png')`,
-        minHeight: '60vh' // Reducido un poco para que se vea la sección de arriba
+        minHeight: '60vh'
       }}>
         <div className="hero-overlay"></div>
         <div className="hero-content">

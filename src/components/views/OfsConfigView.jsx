@@ -9,7 +9,11 @@ const OfsConfigView = ({ loading, setLoading }) => {
     quienesSomos: '',
     footerDireccion: '',
     footerEmail: '',
-    footerTelefono: ''
+    footerTelefono: '',
+    bannerTitle: '',
+    bannerDescription: '',
+    bannerImage: '',
+    bannerActive: false
   });
 
   useEffect(() => {
@@ -21,7 +25,13 @@ const OfsConfigView = ({ loading, setLoading }) => {
     try {
       const res = await api.get('/ofs-config');
       if (res.data.success) {
-        setConfig(res.data.data);
+        // Asegurar que los campos del banner existan en el estado si vienen nulos
+        const data = res.data.data;
+        setConfig({
+            ...config,
+            ...data,
+            bannerActive: data.bannerActive || false
+        });
       }
     } catch (err) {
       console.error('Error al cargar config OFS:', err);
@@ -82,6 +92,55 @@ const OfsConfigView = ({ loading, setLoading }) => {
               />
             </div>
           </section>
+
+          <section style={{ marginBottom: '2rem', padding: '1.5rem', background: '#FFF0F0', borderRadius: '12px', border: '1px solid #FFCDD2' }}>
+            <h3 style={{ color: '#C62828', marginBottom: '1.5rem', borderBottom: '1px solid #FFCDD2', paddingBottom: '0.5rem' }}>📢 Banner de Anuncio Especial</h3>
+            
+            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '12px', background: 'white', padding: '10px', borderRadius: '8px' }}>
+                <input 
+                    type="checkbox" 
+                    id="bannerActive"
+                    checked={config.bannerActive} 
+                    onChange={e => setConfig({...config, bannerActive: e.target.checked})}
+                    style={{ width: '22px', height: '22px', cursor: 'pointer' }}
+                />
+                <label htmlFor="bannerActive" style={{ fontWeight: 'bold', color: '#C62828', cursor: 'pointer' }}>Activar este banner en la web</label>
+            </div>
+
+            <div className="input-group">
+              <label>Título del Banner:</label>
+              <input 
+                type="text" 
+                value={config.bannerTitle || ''} 
+                onChange={e => setConfig({...config, bannerTitle: e.target.value})} 
+                placeholder="Ej: ¡Gran Rifa Pro-Fondos!"
+              />
+            </div>
+
+            <div className="input-group" style={{ marginTop: '1.5rem' }}>
+              <label>Descripción del Banner:</label>
+              <textarea 
+                value={config.bannerDescription || ''} 
+                onChange={e => setConfig({...config, bannerDescription: e.target.value})} 
+                style={{ minHeight: '80px' }}
+                placeholder="Describe el evento o anuncio..."
+              />
+            </div>
+
+            <div className="input-group" style={{ marginTop: '1.5rem' }}>
+              <label>URL de la Imagen del Banner:</label>
+              <input 
+                type="text" 
+                value={config.bannerImage || ''} 
+                onChange={e => setConfig({...config, bannerImage: e.target.value})} 
+                placeholder="https://ejemplo.com/mi-imagen.jpg"
+              />
+              <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '5px' }}>
+                💡 Tip: Puedes subir tu imagen a un sitio como imgur.com o postimages.org y pegar el link directo aquí.
+              </p>
+            </div>
+          </section>
+
           <section style={{ marginBottom: '2rem', padding: '1.5rem', background: '#FFF9F2', borderRadius: '12px' }}>
             <h3 style={{ color: 'var(--secondary)', marginBottom: '1.5rem', borderBottom: '1px solid #FFE0B2', paddingBottom: '0.5rem' }}>Identidad (¿Quiénes somos?)</h3>
             <div className="input-group">
