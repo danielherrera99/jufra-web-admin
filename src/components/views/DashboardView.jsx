@@ -4,15 +4,13 @@ import {
   PieChart, Pie, Cell, Legend, AreaChart, Area 
 } from 'recharts';
 
-const DashboardView = ({ loading, data, user, formatSafeDate, setActiveTab, handleApprove, ActivityIndicator }) => {
+const DashboardView = ({ loading, data, user, formatSafeDate, setActiveTab, handleApprove, ActivityIndicator, setIsModalOpen }) => {
   
   // Procesamiento de Datos para Gráficos
   const chartData = useMemo(() => {
-    if (!data) return { attendance: [], distribution: [] };
+    if (!data) return { attendance: [], distribution: [], birthdays: [] };
 
     // 1. Procesar Asistencia (Tendencia)
-    // Asumiendo que data.asistencias es un array de objetos con { fecha, presentes: [] } o similar
-    // Si la estructura es diferente, ajustamos. Generalmente es un array de registros por fecha.
     const attendanceMap = {};
     (data.asistencias || []).forEach(asis => {
       const date = formatSafeDate(asis.fecha, 'dd/MM');
@@ -22,24 +20,32 @@ const DashboardView = ({ loading, data, user, formatSafeDate, setActiveTab, hand
     const attendance = Object.keys(attendanceMap).map(date => ({
       name: date,
       asistencia: attendanceMap[date]
-    })).slice(-7); // Últimas 7 fechas
+    })).slice(-7);
 
     // 2. Procesar Etapas de Formación
     const stagesMap = {
       'aspirante': { name: 'Aspirantes', value: 0, color: '#94A3B8' },
-      'iniciado': { name: 'Iniciados', value: 0, color: '#38BDF8' },
-      'en_formacion': { name: 'Formación', value: 0, color: '#818CF8' },
-      'promesado': { name: 'Promesados', value: 0, color: '#10B981' }
+      'iniciado': { name: 'Iniciados', value: 0, color: '#0EA5E9' },
+      'en_formacion': { name: 'Formación', value: 0, color: '#6366F1' },
+      'promesado': { name: 'Promesados', value: 0, color: '#22C55E' }
     };
+
+    const birthdays = [];
+    const todayStr = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
 
     (data.hermanos || []).forEach(h => {
       const etapa = h.etapaFormacion || 'aspirante';
       if (stagesMap[etapa]) stagesMap[etapa].value++;
+
+      if (h.fechaNacimiento) {
+        const bdayStr = new Date(h.fechaNacimiento).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' });
+        if (bdayStr === todayStr) birthdays.push(h);
+      }
     });
 
     const distribution = Object.values(stagesMap).filter(s => s.value > 0);
 
-    return { attendance, distribution };
+    return { attendance, distribution, birthdays };
   }, [data, formatSafeDate]);
 
   if (loading) return <div style={{ textAlign: 'center', padding: '5rem' }}><ActivityIndicator /> Generando resumen del panel...</div>;
@@ -52,19 +58,32 @@ const DashboardView = ({ loading, data, user, formatSafeDate, setActiveTab, hand
     .sort((a,b) => new Date(a.fecha) - new Date(b.fecha))[0];
   const ultimosAnuncios = (data.anuncios || []).slice(0, 3);
 
-  const COLORS = ['#38BDF8', '#818CF8', '#10B981', '#94A3B8', '#F59E0B'];
-
   return (
     <div className="animate-fade">
       <div className="flex-responsive" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <div>
-          <h2 style={{ color: 'var(--primary)', margin: 0 }}>Paz y Bien, {user?.nombre || 'Hermano'} 👋</h2>
+          <h2 style={{ color: 'var(--primary)', margin: 0 }}>Paz y Bien, {user?.nombre || 'Hermano'} <span className="waving-hand">👋</span></h2>
           <p style={{ color: 'var(--text-muted)', margin: '5px 0 0 0' }}>Aquí tienes el resumen actual de la fraternidad.</p>
         </div>
         <div style={{ textAlign: 'right' }}>
            <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--primary)' }}>{new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
         </div>
       </div>
+
+      {/* Alertas Comunitarias (Cumpleaños) */}
+      {chartData.birthdays.length > 0 && (
+        <div className="glass-card animate-fade" style={{ background: 'linear-gradient(135deg, #FFF1F2, #FFE4E6)', border: '1px solid #FDA4AF', padding: '1rem 1.5rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <span style={{ fontSize: '2rem' }}>🎂</span>
+          <div>
+            <h4 style={{ margin: 0, color: '#BE123C' }}>¡Hoy tenemos fiesta en la fraternidad!</h4>
+            <p style={{ margin: 0, fontSize: '0.9rem', color: '#E11D48' }}>
+              Cumpleaños de: {chartData.birthdays.map((h, i) => (
+                <strong key={h._id}>{h.nombre} {h.apellido}{i < chartData.birthdays.length - 1 ? ', ' : ''}</strong>
+              ))}
+            </p>
+          </div>
+        </div>
+      )}
       
       {/* Estadísticas Rápidas */}
       <div className="stats-grid">
@@ -172,7 +191,16 @@ const DashboardView = ({ loading, data, user, formatSafeDate, setActiveTab, hand
                  </div>
               </div>
             ) : (
-              <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: '2rem' }}>No hay eventos programados próximamente. 💤</p>
+              <div style={{ textAlign: 'center', padding: '1rem' }}>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>No hay eventos programados próximamente. 💤</p>
+                <button 
+                  onClick={() => { setActiveTab('Eventos'); setIsModalOpen(true); }}
+                  className="btn btn-primary zoom-hover"
+                  style={{ fontSize: '0.85rem', padding: '0.6rem 1.2rem' }}
+                >
+                  + Programar Reunión
+                </button>
+              </div>
             )}
          </div>
 

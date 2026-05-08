@@ -374,6 +374,17 @@ input:focus {
   overflow-y: auto;
 }
 
+.nav-section-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  padding: 0 1rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
 .nav-link {
   text-decoration: none;
   color: var(--text-muted);
@@ -383,6 +394,24 @@ input:focus {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
+}
+
+/* Waving Hand Animation */
+@keyframes wave-animation {
+  0% { transform: rotate( 0.0deg) }
+  10% { transform: rotate(14.0deg) }
+  20% { transform: rotate(-8.0deg) }
+  30% { transform: rotate(14.0deg) }
+  40% { transform: rotate(-4.0deg) }
+  50% { transform: rotate(10.0deg) }
+  60% { transform: rotate( 0.0deg) }
+  100% { transform: rotate( 0.0deg) }
+}
+
+.waving-hand {
+  display: inline-block;
+  animation: wave-animation 2.5s infinite;
+  transform-origin: 70% 70%;
 }
 
 .nav-link:hover {
