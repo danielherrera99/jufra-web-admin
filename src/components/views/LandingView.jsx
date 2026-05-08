@@ -55,9 +55,8 @@ const LandingView = () => {
     <div className="landing-page animate-fade">
       {/* Navegación Pública */}
       <nav className="landing-nav">
-        <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src="/logo_jufra.png" alt="Logo JUFRA" style={{ height: '45px', width: 'auto', objectFit: 'contain' }} />
-          <span style={{ fontWeight: '800', letterSpacing: '1px', fontSize: '1.2rem' }}>JUFRA POMALCA</span>
+        <Link to="/" className="logo">
+          JUFRA POMALCA
         </Link>
         
         <button className="nav-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>

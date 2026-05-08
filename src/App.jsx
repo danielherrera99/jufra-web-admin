@@ -165,7 +165,6 @@ const Login = ({ onLogin }) => {
     <div className="login-container">
       <div className="login-card glass-card animate-fade">
         <div className="login-header">
-          <img src="/logo_jufra.png" alt="Logo JUFRA" style={{ width: '80px', height: 'auto', marginBottom: '1.5rem', filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.1))' }} />
           <h2>JUFRA Admin</h2>
           <p>Panel de Administración</p>
         </div>
@@ -1215,10 +1214,7 @@ const Dashboard = ({ user, onLogout }) => {
         ></div>
       )}
       <aside className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <div className="sidebar-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/logo_jufra.png" alt="Logo" style={{ height: '30px', width: 'auto' }} />
-          <span>JUFRA Admin</span>
-        </div>
+        <div className="sidebar-brand">JUFRA Admin</div>
         <nav className="nav-menu">
           {/* GRUPO: GESTIÓN */}
           <div className="nav-section-title">GESTIÓN</div>
@@ -1257,10 +1253,7 @@ const Dashboard = ({ user, onLogout }) => {
       </aside>
       <main className="dashboard-content">
         <div className="mobile-header">
-          <div className="sidebar-brand" style={{ padding: 0, border: 'none', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src="/logo_jufra.png" alt="Logo" style={{ height: '25px', width: 'auto' }} />
-            <span>JUFRA Admin</span>
-          </div>
+          <div className="sidebar-brand" style={{ padding: 0, border: 'none', fontSize: '1.2rem' }}>JUFRA Admin</div>
           <button className="hamburger" onClick={() => setIsSidebarOpen(true)}>☰</button>
         </div>
         <header className="content-header flex-responsive" style={{ marginBottom: '1.5rem', gap: '2rem' }}>
