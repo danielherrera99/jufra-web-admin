@@ -1118,10 +1118,23 @@ const Dashboard = ({ user, onLogout }) => {
           );
         }
         return (
-          <div className="glass-card animate-fade">
-            <p style={{ color: "var(--text-muted)" }}>
-              {data.length === 0 ? `No hay datos para el módulo de ${activeTab}.` : 'No se encontraron resultados para tu búsqueda.'}
+          <div className="glass-card animate-fade" style={{ textAlign: 'center', padding: '4rem 2rem' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '1.5rem', opacity: 0.2 }}>🔍</div>
+            <h3 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>No se encontraron registros</h3>
+            <p style={{ color: "var(--text-muted)", maxWidth: '400px', margin: '0 auto' }}>
+              {data.length === 0 
+                ? `Actualmente no hay datos cargados en el módulo de ${activeTab}.` 
+                : 'No hay resultados que coincidan con tu búsqueda o filtro actual.'}
             </p>
+            {activeTab === 'Hermanos' && (
+              <button 
+                onClick={() => {setHermanosFilter('todos'); setSearchTerm('');}}
+                className="btn btn-ghost"
+                style={{ marginTop: '1.5rem', fontSize: '0.85rem' }}
+              >
+                Ver todos los hermanos
+              </button>
+            )}
           </div>
         );
     }
@@ -1228,6 +1241,10 @@ const Dashboard = ({ user, onLogout }) => {
                 <button className="btn btn-primary zoom-hover" onClick={() => setIsModalOpen(true)} style={{ background: '#795548', whiteSpace: 'nowrap', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.4)' }}>
                   📝 Redactar Acta
                 </button>
+              ) : activeTab === 'Hermanos' ? (
+                <button className="btn btn-primary zoom-hover" onClick={() => setIsModalOpen(true)} style={{ whiteSpace: 'nowrap', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.4)' }}>
+                  👤 + Añadir Hermano
+                </button>
               ) : activeTab !== 'Hermanos' && (
                 <button className="btn btn-primary zoom-hover" onClick={() => setIsModalOpen(true)} style={{ whiteSpace: 'nowrap', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.4)' }}>
                   + Nuevo
@@ -1242,9 +1259,14 @@ const Dashboard = ({ user, onLogout }) => {
             <button 
               className={`btn ${hermanosFilter === 'pendientes' ? 'btn-primary' : ''}`} 
               onClick={() => setHermanosFilter('pendientes')}
-              style={{ background: hermanosFilter !== 'pendientes' ? 'var(--surface)' : '', color: hermanosFilter !== 'pendientes' ? 'var(--text-main)' : '', border: '1px solid var(--border)', flex: 1 }}
+              style={{ background: hermanosFilter !== 'pendientes' ? 'var(--surface)' : '', color: hermanosFilter !== 'pendientes' ? 'var(--text-main)' : '', border: '1px solid var(--border)', flex: 1, position: 'relative' }}
             >
               Nuevas Solicitudes (Pendientes)
+              {Array.isArray(data) && data.filter(h => !h.activo).length > 0 && (
+                <span style={{ marginLeft: '8px', background: 'var(--accent)', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                  {data.filter(h => !h.activo).length}
+                </span>
+              )}
             </button>
             <button 
               className={`btn ${hermanosFilter === 'activos' ? 'btn-primary' : ''}`} 
