@@ -1237,7 +1237,82 @@ const Dashboard = ({ user, onLogout }) => {
           </div>
         </header>
 
-        {/* ... (previous filters) ... */}
+        {activeTab === 'Hermanos' && (
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+            <button 
+              className={`btn ${hermanosFilter === 'pendientes' ? 'btn-primary' : ''}`} 
+              onClick={() => setHermanosFilter('pendientes')}
+              style={{ background: hermanosFilter !== 'pendientes' ? 'var(--surface)' : '', color: hermanosFilter !== 'pendientes' ? 'var(--text-main)' : '', border: '1px solid var(--border)', flex: 1 }}
+            >
+              Nuevas Solicitudes (Pendientes)
+            </button>
+            <button 
+              className={`btn ${hermanosFilter === 'activos' ? 'btn-primary' : ''}`} 
+              onClick={() => setHermanosFilter('activos')}
+              style={{ background: hermanosFilter !== 'activos' ? 'var(--surface)' : '', color: hermanosFilter !== 'activos' ? 'var(--text-main)' : '', border: '1px solid var(--border)', flex: 1 }}
+            >
+              Hermanos Activos
+            </button>
+            <button 
+              className={`btn ${hermanosFilter === 'todos' ? 'btn-primary' : ''}`} 
+              onClick={() => setHermanosFilter('todos')}
+              style={{ background: hermanosFilter !== 'todos' ? 'var(--surface)' : '', color: hermanosFilter !== 'todos' ? 'var(--text-main)' : '', border: '1px solid var(--border)', flex: 1 }}
+            >
+              Ver Todos
+            </button>
+          </div>
+        )}
+        
+        {activeTab === 'Anuncios' && (
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+            {[{ id: 'todos', label: 'Todos', icon: '📋' }, { id: 'urgente', label: 'Urgentes', icon: '🚨' }, { id: 'evento', label: 'Eventos', icon: '📅' }, { id: 'formacion', label: 'Formación', icon: '📖' }, { id: 'apostolado', label: 'Apostolado', icon: '🙏' }].map(filtro => (
+              <button
+                key={filtro.id}
+                className={`btn ${anunciosFilter === filtro.id ? 'btn-primary' : ''}`}
+                onClick={() => setAnunciosFilter(filtro.id)}
+                style={{ background: anunciosFilter !== filtro.id ? 'var(--surface)' : '', color: anunciosFilter !== filtro.id ? 'var(--text-main)' : '', border: '1px solid var(--border)', whiteSpace: 'nowrap' }}
+              >
+                {filtro.icon} {filtro.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'Actas' && (
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+            {[{ id: 'todas', label: 'Todas las Actas', bg: 'var(--surface)' }, { id: 'consejo', label: 'Consejo', bg: '#0288D115', border: '#0288D1' }, { id: 'fraternidad', label: 'Fraternidad', bg: '#388E3C15', border: '#388E3C' }, { id: 'formacion', label: 'Formación', bg: '#F57C0015', border: '#F57C00' }, { id: 'extraordinaria', label: 'Extraordinarias', bg: '#D32F2F15', border: '#D32F2F' }].map(filtro => (
+              <button
+                key={filtro.id}
+                className={`btn ${actasFilter === filtro.id ? 'btn-primary' : ''}`}
+                onClick={() => setActasFilter(filtro.id)}
+                style={{ 
+                  background: actasFilter === filtro.id ? filtro.border || 'var(--primary)' : filtro.bg || 'var(--surface)', 
+                  color: actasFilter === filtro.id ? 'white' : 'var(--text-main)', 
+                  border: `1px solid ${filtro.border || 'var(--border)'}`, 
+                  whiteSpace: 'nowrap',
+                  fontWeight: actasFilter === filtro.id ? 'bold' : 'normal'
+                }}
+              >
+                {filtro.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'Cantos' && (
+          <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+            {[{ id: 'todos', label: 'Todos', icon: '🎵' }, { id: 'franciscano', label: 'Franciscanos', icon: '🕊️' }, { id: 'mariano', label: 'Marianos', icon: '🌹' }, { id: 'entrada', label: 'Entrada', icon: '🚶' }, { id: 'animacion', label: 'Animación', icon: '🎸' }, { id: 'adoracion', label: 'Adoración', icon: '🙏' }].map(filtro => (
+              <button
+                key={filtro.id}
+                className={`btn ${cantosFilter === filtro.id ? 'btn-primary' : ''}`}
+                onClick={() => setCantosFilter(filtro.id)}
+                style={{ background: cantosFilter !== filtro.id ? 'var(--surface)' : '', color: cantosFilter !== filtro.id ? 'var(--text-main)' : '', border: '1px solid var(--border)', whiteSpace: 'nowrap' }}
+              >
+                {filtro.icon} {filtro.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="mt-4">
           {activeTab === 'Dashboard' ? (
