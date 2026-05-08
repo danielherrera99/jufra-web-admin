@@ -95,7 +95,9 @@ const LandingView = () => {
             </button>
           </div>
         </div>
-           {/* Pilares Section */}
+      </header>
+
+      {/* Pilares Section */}
       <section id="mision" className="features-grid section-padding" style={{ background: 'white' }}>
         <div className="feature-card zoom-hover" style={{ borderTop: '4px solid #8B4513' }}>
           <div className="feature-icon-wrapper" style={{ background: 'rgba(139, 69, 19, 0.1)', color: '#8B4513' }}>
