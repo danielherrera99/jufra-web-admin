@@ -435,6 +435,16 @@ const Dashboard = ({ user, onLogout }) => {
       else if (activeTab === 'Mensajes') endpoint = '/mensajes/admin/todas';
       else if (activeTab === 'Perfil') endpoint = '/auth/perfil';
       else if (activeTab === 'Chat') endpoint = '/mensajes/conversaciones';
+      else if (activeTab === 'Comunicacion') {
+        const [herRes] = await Promise.all([
+          api.get('/hermanos?todos=true')
+        ]);
+        setData({
+          hermanos: herRes.data.hermanos || []
+        });
+        setLoading(false);
+        return;
+      }
       else if (activeTab === 'Dashboard') {
         const [hermanosRes, anunciosRes, eventosRes, asisRes] = await Promise.all([
           api.get('/hermanos?todos=true'),
@@ -1238,7 +1248,7 @@ const Dashboard = ({ user, onLogout }) => {
 
           {/* GRUPO: ADMIN */}
           <div className="nav-section-title" style={{ marginTop: '1.5rem' }}>ADMINISTRACIÓN</div>
-          {modules.filter(m => ['Documentos', 'Actas', 'Formacion', 'Galeria', 'Servicios', 'Mensajes', 'WebConfig', 'OfsConfig', 'Perfil'].includes(m.id)).map((mod) => (
+          {modules.filter(m => ['Documentos', 'Actas', 'Formacion', 'Galeria', 'Servicios', 'Comunicacion', 'Mensajes', 'WebConfig', 'OfsConfig', 'Perfil'].includes(m.id)).map((mod) => (
              <a key={mod.id} href="#" onClick={(e) => { e.preventDefault(); setActiveTab(mod.id); setIsSidebarOpen(false); }}
               className={`nav-link ${activeTab === mod.id ? 'active' : ''}`}
             >
