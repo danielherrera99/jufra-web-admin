@@ -7,8 +7,9 @@ const AsistenteIAView = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || localStorage.getItem('gemini_api_key') || '');
-  const [isConfiguring, setIsConfiguring] = useState(!import.meta.env.VITE_GEMINI_API_KEY && !localStorage.getItem('gemini_api_key'));
+  const envApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  const [apiKey, setApiKey] = useState(envApiKey || localStorage.getItem('gemini_api_key') || '');
+  const [isConfiguring, setIsConfiguring] = useState(!envApiKey && !localStorage.getItem('gemini_api_key'));
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -57,7 +58,7 @@ const AsistenteIAView = () => {
       console.error(error);
       setMessages(prev => [...prev, { 
         role: 'system', 
-        content: `Error de conexión: ${error.message}. Por favor, verifica que tu Llave API sea válida.` 
+        content: `Error de conexión: ${error.message}. Si acabas de cambiar la clave, intenta recargar la página o usar el botón "Cambiar Llave" para pegar la nueva manualmente.` 
       }]);
     } finally {
       setIsLoading(false);
