@@ -59,7 +59,7 @@ const AsistenteIAView = () => {
       console.error(error);
       setMessages(prev => [...prev, { 
         role: 'system', 
-        content: 'Hubo un error de conexión con la IA. Por favor, verifica que tu Llave API sea válida o intenta de nuevo más tarde.' 
+        content: `Error de conexión: ${error.message}. Por favor, verifica que tu Llave API sea válida.` 
       }]);
     } finally {
       setIsLoading(false);
