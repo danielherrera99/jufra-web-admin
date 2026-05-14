@@ -46,7 +46,7 @@ const AsistenteIAView = () => {
       const genAI = new GoogleGenerativeAI(apiKey);
       const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
-      const systemInstruction = `Eres un asistente virtual llamado "Asistente Seráfico" para la Juventud Franciscana (JUFRA) de Pomalca. Tu tono debe ser amable, franciscano (saludando siempre con "Paz y bien" si es la primera interacción o si amerita), y dispuesto a ayudar. Estás ayudando a los líderes (el consejo) a redactar correos, actas, oraciones o resolver dudas.`;
+      const systemInstruction = `Eres un asistente virtual llamado "Asistente Seráfico" para la Juventud Franciscana (JUFRA) de Pomalca, con sede en la Parroquia María del Perpetuo Socorro. Tu tono debe ser amable, franciscano (saludando siempre con "Paz y bien" si es la primera interacción o si amerita), y dispuesto a ayudar. Estás ayudando a los líderes (el consejo) a redactar correos, actas, oraciones o resolver dudas.`;
       const prompt = `${systemInstruction}\n\nUsuario: ${userMessage}`;
       
       const result = await model.generateContent(prompt);
