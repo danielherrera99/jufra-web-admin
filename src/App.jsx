@@ -485,7 +485,7 @@ const Dashboard = ({ user, onLogout }) => {
         const response = await api.get(endpoint);
         // Map the responses correctly based on typical properties
         const resData = response.data;
-        setData(resData.usuario || resData.conversaciones || resData.items || resData.galeria || resData.asistencias || resData.hermanos || resData.anuncios || resData.eventos || resData.servicios || resData.peticiones || resData.temas || resData.actas || resData.documentos || resData.fotos || resData.cantos || (Array.isArray(resData) ? resData : []));
+        setData(resData.usuario || resData.conversaciones || resData.items || resData.galeria || resData.asistencias || resData.hermanos || resData.anuncios || resData.eventos || resData.servicios || resData.peticiones || resData.solicitudes || resData.temas || resData.actas || resData.documentos || resData.fotos || resData.cantos || (Array.isArray(resData) ? resData : []));
       } else {
         setData([]); // Modulo sin endpoint programado aún
       }
