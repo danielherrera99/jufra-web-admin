@@ -115,9 +115,6 @@ const LandingView = () => {
             <button className="btn btn-primary zoom-hover" onClick={() => setIsInterestModalOpen(true)} style={{ padding: '1rem 2.5rem', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.3)' }}>
               Únete a nuestra fraternidad
             </button>
-            <a href="/app-release.apk" download className="btn zoom-hover" style={{ padding: '1rem 2rem', background: '#388E3C', color: 'white', textDecoration: 'none', borderRadius: '12px', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(56, 142, 60, 0.3)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '1.2rem' }}>📱</span> Descargar App
-            </a>
             <a href="#eventos" className="btn btn-ghost zoom-hover" style={{ padding: '1rem 2.5rem', borderColor: 'white', color: 'white', textDecoration: 'none' }}>
               Ver actividades
             </a>
@@ -318,10 +315,13 @@ const LandingView = () => {
           <p style={{ opacity: 0.6, fontSize: '0.85rem', margin: 0 }}>
             &copy; {new Date().getFullYear()} Juventud Franciscana - Pomalca. Sembrando Paz y Bien.
           </p>
-          <div style={{ marginTop: '1.5rem' }}>
+          <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
             <Link to="/admin" style={{ color: 'var(--secondary)', textDecoration: 'none', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', border: '1px solid var(--secondary)', padding: '0.4rem 1rem', borderRadius: '4px', opacity: 0.7 }}>
               Acceso Interno
             </Link>
+            <a href="/app-release.apk" download style={{ color: '#4CAF50', textDecoration: 'none', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '1px', border: '1px solid #4CAF50', padding: '0.4rem 1rem', borderRadius: '4px', opacity: 0.7, display: 'flex', alignItems: 'center', gap: '5px' }}>
+              📱 App Móvil
+            </a>
           </div>
         </div>
       </footer>
