@@ -93,9 +93,6 @@ const LandingView = () => {
           <a href="#mision" onClick={() => setIsMenuOpen(false)}>Misión</a>
           <a href="#eventos" onClick={() => setIsMenuOpen(false)}>Eventos</a>
           <a href="#contacto" onClick={() => setIsMenuOpen(false)}>Contacto</a>
-          <a href="/app-release.apk" download className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px' }} onClick={() => setIsMenuOpen(false)}>
-            📱 App
-          </a>
         </div>
       </nav>
 

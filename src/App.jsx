@@ -1225,7 +1225,7 @@ const Dashboard = ({ user, onLogout }) => {
 
           {/* GRUPO: VIDA FRATERNA */}
           <div className="nav-section-title" style={{ marginTop: '1.5rem' }}>VIDA FRATERNA</div>
-          {modules.filter(m => ['Espiritu', 'Peticiones', 'Cantos', 'Anuncios', 'Eventos', 'Chat', 'Mapa'].includes(m.id)).map((mod) => (
+          {modules.filter(m => ['Espiritu', 'Peticiones', 'Solicitudes', 'Cantos', 'Anuncios', 'Eventos', 'Chat', 'Mapa'].includes(m.id)).map((mod) => (
              <a key={mod.id} href="#" onClick={(e) => { e.preventDefault(); setActiveTab(mod.id); setIsSidebarOpen(false); }}
               className={`nav-link ${activeTab === mod.id ? 'active' : ''}`}
             >
