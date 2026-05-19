@@ -3,19 +3,19 @@ import { Link } from 'react-router-dom';
 import api from '../../config/api';
 
 const LandingView = () => {
-  const [config, setConfig] = useState({
+  const [config] = useState({
     heroTitle: 'JUFRA Pomalca',
     heroSubtitle: 'Siguiendo los pasos de San Francisco de Asís y Santa Clara...',
-    mision: 'Cargando misión...',
-    vision: 'Cargando visión...',
-    valores: 'Cargando valores...',
-    fraseInspiradora: '...',
-    autorFrase: '...',
-    emailContacto: '...',
-    telefonoContacto: '...',
-    mapQuery: 'Pomalca',
-    familiaTitulo: 'Cargando...',
-    familiaDescripcion: '...'
+    mision: 'Cultivando la fe a través de la oración y el encuentro fraterno, llevando el Evangelio a la vida cotidiana.',
+    vision: 'Preparándonos para ser instrumentos de paz en el mundo actual, siendo luz en nuestra comunidad.',
+    valores: 'Viviendo en comunidad, compartiendo la alegría de ser hermanos y sirviendo con humildad.',
+    fraseInspiradora: 'Empieza por hacer lo necesario, luego lo que es posible, y de pronto estarás haciendo lo imposible.',
+    autorFrase: 'San Francisco de Asís',
+    emailContacto: 'jufrapomalca@gmail.com',
+    telefonoContacto: '+51 900 000 000',
+    mapQuery: 'Parroquia María del Perpetuo Socorro, Pomalca',
+    familiaTitulo: 'Orden Franciscana Seglar (OFS)',
+    familiaDescripcion: 'Caminamos junto a nuestros hermanos mayores de la OFS, compartiendo el mismo ideal de vida y misión en la Iglesia.'
   });
   const [eventos, setEventos] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,12 +23,8 @@ const LandingView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [configRes, eventosRes] = await Promise.all([
-          api.get('/web-config'),
-          api.get('/eventos')
-        ]);
+        const eventosRes = await api.get('/eventos');
         
-        if (configRes.data.success) setConfig(configRes.data.data);
         if (eventosRes.data.success) {
           const now = new Date();
           const proximos = eventosRes.data.data
