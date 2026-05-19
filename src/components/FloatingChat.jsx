@@ -57,7 +57,7 @@ const FloatingChat = () => {
     <div className="floating-chat-container">
       {/* Botón Flotante de WhatsApp */}
       <a 
-        href="https://wa.me/51900000000?text=¡Paz%20y%20bien!%20Me%20gustaría%20recibir%20información%20sobre%20la%20fraternidad." 
+        href="https://wa.me/51981574685?text=¡Paz%20y%20bien!%20Me%20gustaría%20recibir%20información%20sobre%20la%20fraternidad." 
         target="_blank" 
         rel="noopener noreferrer"
         className="whatsapp-bubble"

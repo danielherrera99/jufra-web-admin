@@ -12,7 +12,7 @@ const LandingView = () => {
     fraseInspiradora: 'Empieza por hacer lo necesario, luego lo que es posible, y de pronto estarás haciendo lo imposible.',
     autorFrase: 'San Francisco de Asís',
     emailContacto: 'jufrapomalca@gmail.com',
-    telefonoContacto: '+51 900 000 000',
+    telefonoContacto: '+51 981 574 685',
     mapQuery: 'Parroquia María del Perpetuo Socorro, Pomalca',
     familiaTitulo: 'Orden Franciscana Seglar (OFS)',
     familiaDescripcion: 'Caminamos junto a nuestros hermanos mayores de la OFS, compartiendo el mismo ideal de vida y misión en la Iglesia.'
@@ -289,7 +289,7 @@ const LandingView = () => {
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '1rem', opacity: 0.9 }}>
                 <span style={{ background: 'rgba(255,255,255,0.1)', width: '35px', height: '35px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📱</span>
-                <span style={{ fontSize: '0.95rem' }}>{config.telefonoContacto || '+51 900 000 000'}</span>
+                <span style={{ fontSize: '0.95rem' }}>{config.telefonoContacto || '+51 981 574 685'}</span>
               </li>
               <li style={{ display: 'flex', alignItems: 'center', gap: '1rem', opacity: 0.9 }}>
                 <span style={{ background: 'rgba(255,255,255,0.1)', width: '35px', height: '35px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📍</span>
