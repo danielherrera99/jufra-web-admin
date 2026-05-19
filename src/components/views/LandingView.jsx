@@ -75,8 +75,9 @@ const LandingView = () => {
   };
 
   return (
-    <div className="landing-page animate-fade">
-      {/* Navegación Pública */}
+    <>
+      <div className="landing-page animate-fade">
+        {/* Navegación Pública */}
       <nav className="landing-nav">
         <Link to="/" className="logo">
           JUFRA POMALCA
@@ -323,8 +324,8 @@ const LandingView = () => {
               📱 App Móvil
             </a>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
 
       {/* Modal de Interés */}
       {isInterestModalOpen && (
@@ -385,8 +386,7 @@ const LandingView = () => {
           </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 };
 
