@@ -19,6 +19,29 @@ const LandingView = () => {
   });
   const [eventos, setEventos] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Modal de Interés
+  const [isInterestModalOpen, setIsInterestModalOpen] = useState(false);
+  const [interestData, setInterestData] = useState({ nombre: '', edad: '', telefono: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInterestSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      await api.post('/peticiones', {
+        contenido: `NUEVO INTERESADO: \nNombre: ${interestData.nombre}\nEdad: ${interestData.edad}\nTeléfono: ${interestData.telefono}`,
+        anonimo: false
+      });
+      alert('¡Gracias por tu interés! Nos comunicaremos contigo pronto.');
+      setIsInterestModalOpen(false);
+      setInterestData({ nombre: '', edad: '', telefono: '' });
+    } catch (error) {
+      alert('Hubo un error al enviar tus datos. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,6 +91,9 @@ const LandingView = () => {
           <a href="#mision" onClick={() => setIsMenuOpen(false)}>Misión</a>
           <a href="#eventos" onClick={() => setIsMenuOpen(false)}>Eventos</a>
           <a href="#contacto" onClick={() => setIsMenuOpen(false)}>Contacto</a>
+          <a href="/app-release.apk" download className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '5px', marginLeft: '10px' }} onClick={() => setIsMenuOpen(false)}>
+            📱 App
+          </a>
         </div>
       </nav>
 
@@ -85,13 +111,16 @@ const LandingView = () => {
           <p className="hero-subtitle">
             {config.heroSubtitle}
           </p>
-          <div className="flex-responsive" style={{ justifyContent: 'center', gap: '1.5rem', marginTop: '2rem' }}>
-            <button className="btn btn-primary zoom-hover" style={{ padding: '1rem 3.5rem', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.3)' }}>
+          <div className="flex-responsive" style={{ justifyContent: 'center', gap: '1rem', marginTop: '2rem', flexWrap: 'wrap' }}>
+            <button className="btn btn-primary zoom-hover" onClick={() => setIsInterestModalOpen(true)} style={{ padding: '1rem 2.5rem', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.3)' }}>
               Únete a nuestra fraternidad
             </button>
-            <button className="btn btn-ghost zoom-hover" style={{ padding: '1rem 3rem', borderColor: 'white', color: 'white' }}>
+            <a href="/app-release.apk" download className="btn zoom-hover" style={{ padding: '1rem 2rem', background: '#388E3C', color: 'white', textDecoration: 'none', borderRadius: '12px', fontWeight: 'bold', boxShadow: '0 4px 15px rgba(56, 142, 60, 0.3)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '1.2rem' }}>📱</span> Descargar App
+            </a>
+            <a href="#eventos" className="btn btn-ghost zoom-hover" style={{ padding: '1rem 2.5rem', borderColor: 'white', color: 'white', textDecoration: 'none' }}>
               Ver actividades
-            </button>
+            </a>
           </div>
         </div>
       </header>
@@ -296,6 +325,67 @@ const LandingView = () => {
           </div>
         </div>
       </footer>
+
+      {/* Modal de Interés */}
+      {isInterestModalOpen && (
+        <div className="modal-overlay" onClick={() => setIsInterestModalOpen(false)}>
+          <div className="modal-content animate-fade" style={{ maxWidth: '450px', background: 'var(--surface)', padding: '2rem', borderRadius: '24px' }} onClick={e => e.stopPropagation()}>
+            <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+              <span style={{ fontSize: '3rem', display: 'block', marginBottom: '0.5rem' }}>🕊️</span>
+              <h2 style={{ color: 'var(--primary)', marginBottom: '0.5rem' }}>Únete a JUFRA</h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Déjanos tus datos y nos comunicaremos contigo para invitarte a nuestra próxima jornada.</p>
+            </div>
+            
+            <form onSubmit={handleInterestSubmit}>
+              <div className="input-group" style={{ marginBottom: '1rem' }}>
+                <label style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>Nombre Completo</label>
+                <input 
+                  type="text" 
+                  required 
+                  placeholder="Ej: Francisco Asís"
+                  value={interestData.nombre}
+                  onChange={(e) => setInterestData({...interestData, nombre: e.target.value})}
+                  style={{ background: 'white', border: '1px solid var(--border)' }}
+                />
+              </div>
+              <div className="input-group" style={{ marginBottom: '1rem' }}>
+                <label style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>Edad</label>
+                <input 
+                  type="number" 
+                  required 
+                  placeholder="Ej: 22"
+                  min="12"
+                  max="40"
+                  value={interestData.edad}
+                  onChange={(e) => setInterestData({...interestData, edad: e.target.value})}
+                  style={{ background: 'white', border: '1px solid var(--border)' }}
+                />
+              </div>
+              <div className="input-group" style={{ marginBottom: '1.5rem' }}>
+                <label style={{ color: 'var(--text-main)', fontWeight: 'bold' }}>Número de Teléfono / WhatsApp</label>
+                <input 
+                  type="tel" 
+                  required 
+                  placeholder="Ej: 900 000 000"
+                  value={interestData.telefono}
+                  onChange={(e) => setInterestData({...interestData, telefono: e.target.value})}
+                  style={{ background: 'white', border: '1px solid var(--border)' }}
+                />
+              </div>
+              
+              <div className="flex-responsive" style={{ gap: '1rem' }}>
+                <button type="button" className="btn btn-ghost" onClick={() => setIsInterestModalOpen(false)} style={{ flex: 1, padding: '0.8rem' }}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn btn-primary" disabled={isSubmitting} style={{ flex: 1, padding: '0.8rem', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.3)' }}>
+                  {isSubmitting ? 'Enviando...' : 'Enviar Datos'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
