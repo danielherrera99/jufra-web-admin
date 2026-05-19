@@ -43,6 +43,7 @@ import OfsConfigView from './components/views/OfsConfigView';
 import MisMensajesView from './components/views/MisMensajesView';
 import MensajesAdminView from './components/views/MensajesAdminView';
 import AsistenteIAView from './components/views/AsistenteIAView';
+import SolicitudesView from './components/views/SolicitudesView';
 import ItemReadModal from './components/ItemReadModal';
 import { format, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -415,6 +416,7 @@ const Dashboard = ({ user, onLogout }) => {
       else if (activeTab === 'Eventos') endpoint = '/eventos';
       else if (activeTab === 'Servicios') endpoint = '/servicios';
       else if (activeTab === 'Peticiones') endpoint = '/peticiones';
+      else if (activeTab === 'Solicitudes') endpoint = '/solicitudes';
       else if (activeTab === 'Formacion') endpoint = '/formacion';
       else if (activeTab === 'Actas') endpoint = '/actas';
       else if (activeTab === 'Documentos') endpoint = '/documentos';
@@ -1102,6 +1104,7 @@ const Dashboard = ({ user, onLogout }) => {
       case 'Eventos': return <EventosList filteredData={filteredData} setReadItem={setReadItem} openEditModal={openEditModal} handleDelete={handleDelete} />;
       case 'Servicios': return <ServiciosList filteredData={filteredData} setReadItem={setReadItem} openEditModal={openEditModal} handleDelete={handleDelete} handleParticipar={handleParticipar} />;
       case 'Peticiones': return <PeticionesList filteredData={filteredData} handleOrar={handleOrar} openEditModal={openEditModal} handleDelete={handleDelete} />;
+      case 'Solicitudes': return <SolicitudesView data={{ solicitudes: filteredData }} loading={loading} fetchData={fetchData} />;
       case 'Formacion': return <FormacionList filteredData={filteredData} setReadItem={setReadItem} openEditModal={openEditModal} handleDelete={handleDelete} />;
       case 'Cantos': return <CantosList filteredData={filteredData} setReadItem={setReadItem} openEditModal={openEditModal} handleDelete={handleDelete} />;
       case 'Actas': return <ActasList filteredData={filteredData} getActaColor={getActaColor} formatSafeDate={formatSafeDate} setReadItem={setReadItem} openEditModal={openEditModal} handleDelete={handleDelete} />;

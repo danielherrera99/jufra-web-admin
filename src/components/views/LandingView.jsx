@@ -29,9 +29,10 @@ const LandingView = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await api.post('/peticiones', {
-        contenido: `NUEVO INTERESADO: \nNombre: ${interestData.nombre}\nEdad: ${interestData.edad}\nTeléfono: ${interestData.telefono}`,
-        anonimo: false
+      await api.post('/solicitudes', {
+        nombre: interestData.nombre,
+        edad: interestData.edad,
+        telefono: interestData.telefono
       });
       alert('¡Gracias por tu interés! Nos comunicaremos contigo pronto.');
       setIsInterestModalOpen(false);
